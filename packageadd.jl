@@ -1,0 +1,10 @@
+using Pkg
+Pkg.add("HypothesisTests")
+Pkg.add("Plots")
+Pkg.add("Random")
+Pkg.add("DelimitedFiles")
+Pkg.add("Distributions")
+Pkg.add("SpecialFunctions")
+Pkg.add("Statistics")
+Pkg.add("DataFrames")
+Pkg.add("StatsBase")
