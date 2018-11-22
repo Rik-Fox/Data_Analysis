@@ -1,6 +1,7 @@
 using Distributions,SpecialFunctions,Statistics,DataFrames
 using HypothesisTests,Plots,Random,DelimitedFiles,Pkg
 using StatsBase
+Pkg.add("LaTeXStrings")
 pyplot()
 
 Data = readdlm("companylist.csv",',')
@@ -23,15 +24,16 @@ samp900 = sig[choose]
 h90 = fit(Histogram,samp90)
 h900 = fit(Histogram,samp900)
 
-print(ChisqTest(h90.weights))
-print(ChisqTest(h900.weights))
-print(ChisqTest(h90.weights,benford))
-print(ChisqTest(h900.weights,benford))
+ChisqTest(h90.weights)
+ChisqTest(h900.weights)
 
-print(ChisqTest(h90.weights,h90.weights/sum(h90.weights)))
-print(ChisqTest(h900.weights,h900.weights/sum(h900.weights)))
+ChisqTest(h90.weights,benford)
+ChisqTest(h900.weights,benford)
 
-histogram(samp90,normed=true,bins=10)
+histogram(samp900,normed=true,bins=10,label="Raw Counts")
+plot!(x,benford,label = "Benfords Law")
+xlabel!("First Significant Figure")
+ylabel!("Digit Density")
 xticks!(x)
-plot!(x,benford)
-title!("Financial Fraud Analysis")
+title!("Financial Fraud Analysis Using Benford's Law with N=900")
+savefig("Benford_900")
