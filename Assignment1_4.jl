@@ -1,33 +1,47 @@
 using Distributions,SpecialFunctions,Statistics,HypothesisTests
-using StatsBase,Plots,Random
+using StatsBase,Plots,Random,LinearAlgebra
 pyplot()
 
-N=10000
-μ = 5
-σ = 1
+N=100
+μ = 2
+σ = 0.5
 samp = (randn(N).*σ) .+μ
+
 histogram(samp,bins=100)
+xlabel!("X")
 
-trial_μ = collect(1:0.1:10)
-trial_σ = collect(1:0.1:10)
+dμ = 0.1
+dσ = dμ/10
 
-low5 = zeros(length(trial_μ),length(trial_σ))
-high5 = zeros(length(trial_μ),length(trial_σ))
+trial_μ = collect(-4.9:dμ:5)
+trial_σ = collect(0.01:dσ:1)
 
-for i=1:length(trial_σ)
-low5[:,i] .= invlogcdf.(Normal.(trial_μ,trial_σ[i]),log(0.025))
-high5[:,i] .= invlogcdf.(Normal.(trial_μ,trial_σ[i]),log(0.975))
+big_i = length(trial_μ)
+J = length(trial_σ)
+
+
+L = zeros(big_i,J)
+
+l = 1.0
+
+for i=1:big_i
+      for j=1:J
+            for k=1:length(samp)
+                  l = l*(1/sqrt(2*pi*trial_σ[j].^2))*exp(-((samp[k]-trial_μ[i])^2)/2*trial_σ[j].^2)
+            end
+
+            L[i,j]= l
+            l=1
+      end
 end
 
-μ_L = trial_μ.-mean(samp)
-σ2_L = (trial_σ.^2).-((samp.^2).-(mean(samp)^2))
+ind = findmax(L)
 
-map5 = abs.(high5).-abs.(low5)
+heatmap(trial_μ,trial_σ,L)
+xticks!(trial_σ)
 
-heatmap(map5)
 
-low1 = zeros(length(trial_μ),length(trial_σ))
-high1 = zeros(length(trial_μ),length(trial_σ))
 
-low1  .= invlogcdf.(Normal.(trial_μ,trial_σ),log(0.005))
-high1 .= invlogcdf.(Normal.(trial_μ,trial_σ),log(0.995))
+predict_μ = trial_μ[ind[2][1]]
+predict_σ = trial_σ[ind[2][2]]
+trial_σ[ind[2][3]]

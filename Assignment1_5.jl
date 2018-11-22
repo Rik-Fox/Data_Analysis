@@ -1,48 +1,47 @@
-using Distributions
-using SpecialFunctions
-using Statistics
-using StatsBase
-using DelimitedFiles
-# using PyPlot
-using HypothesisTests
-using Plots
+using Distributions,SpecialFunctions,Statistics,StatsBase,DelimitedFiles,HypothesisTests,Plots
+pyplot()
 
-trueMean=50
-trueVar=9
-n=5
-dx=0.1
+N = 5
+μ = 50
+σ2 = 9
+d = 0.1
 
+samp = rand(Normal(μ,sqrt(σ2)),N)
+samp_μ = mean(samp)
+samp_σ2 = var(samp)
 
-Sample=rand(Normal(trueMean,sqrt(trueVar)),n)
-sampleMean=mean(Sample)
-sampleVar=var(Sample)
-meanAxis=collect(sampleMean-1.96*sqrt(sampleVar):dx:sampleMean+1.96*sqrt(sampleVar))
-varAxis=collect(dx:dx:2*sampleVar)
+low = samp_μ - (1.96*sqrt(samp_σ2))
+high = samp_μ + (1.96*sqrt(samp_σ2))
 
-L=zeros(length(varAxis),length(meanAxis))
+trial_μ = collect(low:d:high)
+trial_σ2 = collect(0.1:d:2*samp_σ2)
+trial_σ = sqrt.(trial_σ2)
 
-function pdfsum(mu,std,x)
-    summy=1
-    for i in 1:length(x)
-        summy*=pdf(Normal(mu,std),x[i])
+L = zeros(length(trial_σ2),length(trial_μ))
+
+function pdfproduct(μ,σ,x)
+    Π=1
+    for i = 1:length(x)
+        Π *= pdf(Normal(μ,σ),x[i])
     end
-    return summy
+    return Π
 end
 
-for i in 1:length(meanAxis)
-    for j in 1:length(varAxis)
-        L[end+1-j,i]=pdfsum(meanAxis[i],sqrt(varAxis[j]),Sample)
+for i in 1:length(trial_μ)
+    for j in 1:length(trial_σ2)
+        L[end+1-j,i] = pdfproduct(trial_μ[i],trial_σ[j],samp)
     end
 end
 
 # prior/length(prior)
 
-prior=ones(length(varAxis),length(meanAxis))
-prob_of_data=sum(L .* prior/length(prior))
+prior = ones(length(trial_σ2),length(trial_μ))
+post = L .* prior
+P_data = sum(post/length(prior))
 
-posterior=L .* prior /prob_of_data
+P = post/P_data
 
-heatmap(meanAxis,varAxis,posterior)
+heatmap(trial_μ,trial_σ2,P)
 
 #Using posterior as prior
 
