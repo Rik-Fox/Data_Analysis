@@ -9,12 +9,13 @@ x = collect(60:1:90)        #for range of 0 to 100 marks
 μ = 75
 σ_pop = 7
 
-#### Sample Distribution
+#### Sample
 N = 30              #number of children in class
 σ_sem = σ_pop/sqrt(N)
-z = (72-μ)/σ_sem
 
-samp_dist = Normal(samp_mean,σ_sem)
+
+#### Z-Statistic
+z = (72-μ)/σ_sem
 
 #### 1 sided
 thres_1 = invlogcdf(Normal(),log(0.01))
