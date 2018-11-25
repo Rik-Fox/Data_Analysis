@@ -1,8 +1,8 @@
 using Distributions,SpecialFunctions,Statistics,DataFrames
 using HypothesisTests,Plots,Random,DelimitedFiles,Pkg
 using StatsBase
-Pkg.add("LaTeXStrings")
 pyplot()
+theme(:wong)
 
 Data = readdlm("companylist.csv",',')
 
