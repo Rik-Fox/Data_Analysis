@@ -48,7 +48,9 @@ trial_σ2[42]
 trial_σ2[43]
 trial_σ2[44]
 
-plot(trial_σ2,P[ind[2][1],:],label= "Marginal Distribution")
+P2 = P.^2
+
+plot(trial_σ2,P2[ind[2][1],:],label= "Marginal Distribution")
 vline!([σ2_hat],label="σ̂²")
 xlabel!("σ²")
 ylabel!("Maximum Likelihood Estimation")
@@ -63,8 +65,7 @@ xticks!(0:1:10)
 ylabel!("Maximum Likelihood Estimation")
 title!("μ Marginal at σ̂²")
 
-savefig("mu_marginal.png")
-
+#savefig("mu_marginal.png")
 
 heatmap(trial_σ,trial_μ,P,colorbar=false)
 title!("Maximum Likelihood Estimation of a Normal Distribution")
@@ -73,4 +74,4 @@ xticks!(0:0.1:1)
 ylabel!("μ")
 yticks!(0:1:10)
 
-savefig("mle_2d.png")
+#savefig("mle_2d.png")

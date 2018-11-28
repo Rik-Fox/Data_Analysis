@@ -38,14 +38,14 @@ sum(uni)
 
 uni_chisq90 = 90*sum((((h90./90).-uni).^2)./uni)
 uni_chisq900 = 900*sum((((h900./900).-uni).^2)./uni)
-uni_p90 = 1-cdf(Chisq(8),uni_chisq90)
-uni_p900 = 1-cdf(Chisq(8),uni_chisq900)
+uni_p90 = cdf(Chisq(8),uni_chisq90)
+uni_p900 = cdf(Chisq(8),uni_chisq900)
 
 chisq90 = 90*sum((((h90./90).-benford).^2)./benford)
 chisq900 = 900*sum((((h900./900).-benford).^2)./benford)
 
-p90 = 1-cdf(Chisq(8),chisq90)
-p900 = 1-cdf(Chisq(8),chisq900)
+p90 = cdf(Chisq(8),chisq90)
+p900 = cdf(Chisq(8),chisq900)
 
 ChisqTest(h90)
 ChisqTest(h900)
