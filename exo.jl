@@ -30,7 +30,7 @@ end
 avg_measure = 0
 avg_measure = fuck(avg_measure,data[:,2])
 
-firstbit = data[collect(1:100),2]
+firstbit = data[:,2]
 
 maxi = findmax(firstbit)
 
@@ -38,19 +38,23 @@ FT = fft(firstbit/maxi[1])
 power = real(fftshift(FT.*conj(FT)))
 
 
+fm =findmin(data[:,1])
+
+xax = data[:,1] .- fm[1]
+xaxf = 1 ./xax
+
+steps = [i*(1/avg_measure) for i in -(length(firstbit)/2)+1:(length(firstbit)/2)-1]
+
+a = findmax(power)
+xax[a[2]]
 
 
-steps = [i*(1/avg_measure) for i in -(length(firstbit)/2)+1:(length(firstbit)/2)]
-
-
-
-
-
-plot(steps,power,legend=false,ylim=(0,0.001))
+plot(xax,power,legend=false,ylim=(0,0.0005))
+xaxis!(collect(0:0.5:10))
 title!("Fourier Analysis")
 ylabel!("ĤH")
 xlabel!("Frequency")
-savefig("sym.png")
+savefig("ftfull.png")
 
 
 dip = zeros(4)
@@ -99,7 +103,7 @@ remover = vcat(transit1,transit2,transit3,transit4)
 I0=mean(data[Int.(remover),2])
 IE=mean(data[Int.([dip[1],dip[2],dip[3],dip[4]]),2])
 R_ratio=sqrt(1-IE/I0)
-
+1/R_ratio
 
 trans_mag1 = (data[dip[1]+4,1]) - (data[dip[1]-5,1])
 trans_mag2 = (data[dip[2]+4,1]) - (data[dip[2]-5,1])
