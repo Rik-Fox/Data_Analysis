@@ -1,0 +1,43 @@
+\documentclass[a4paper,12pt,notitlepage]{article}
+\usepackage{mathtools}
+\usepackage{amssymb}
+\usepackage{braket}
+\usepackage{graphicx}
+\usepackage[section]{placeins}
+\title{Data Analysis}
+\author{Richard Fox}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+\section{Analysing Exoplanet Data}
+
+Starting off with the naive approach, just finding the local minima and averaging the distance between them FigureX, yielding an orbital period of 2.2 days, presuming the measurements are recorded in days. 
+
+Next an attempt to show this using an fft algorithm is attempted, but it seems to correspond to a period of $\approx 4.822$ days which cannot be correct, although there is a much smaller peak corresponding to  the 2.2 period.
+
+Furthermore, there is a vast peak,that I believe corresponds to the frequency for the orbital period,  by expecting the peak at $\approx 0.55$, even if the much smaller spikes seem to match half wavelength harmonics of this.
+
+By plotting the intensity dips over the same range we can extrapolate the points at which the exoplanet starts blocking light and when it ends. By take the average of the points we get a transit time of $\approx 0.1839$ days or $\approx 4.41$ hours.
+
+Flux is given by $flux = \frac{Intensity}{Area}$ as we don't know the areas we can only find the ratio of the star and planet radii. 
+$$ \frac{I_s}{A_s} = \frac{I_{s-p}}{A_s-A_p} $$
+where $I_s\   ,  I_{s-p}$ are the intensity of the sun and of the sun when the planet passes respectively, $A_s\  ,  A_p$ are the area of the sun and planet respectively. The astronomical distance away any star is we can treat the area as a circle giving the ratio of radii as:
+$$\frac{r_s}{r_p} = \sqrt{1-\frac{I_{s-p}}{I_s}}$$
+Which is shown by R\_ratio in FigureX, corresponding to the star being only $11.75$ times larger than its planet! Considering the Sun is $400$ times larger than the earth, and the Sun is $10$ times larger by radius than jupiter, I would like to start to try and make simple hypotheses on this system.
+
+By considering the period of 2.2 days, we can infer a relative velocity, and can constrict this by a relative escape velocity, or restrict the mass of the planet but using Jupiter as the largest dimension of planet for condensing and beginning to become a star occurs. However upon thinking about this our data actually does not give us any information on parallax between these bodies. There, to my knowledge, is no difference between the observed intensities if the star is orbiting the planet or vice versa and therefore it could have more or less mass than Jupiter, as jupiter would shrink as it acquired more mass from its current size.
+
+
+\section{Simulation of an Auto-Regressive Model}
+
+INSERT CODE HERE
+
+
+
+
+
+
+\end{document}
