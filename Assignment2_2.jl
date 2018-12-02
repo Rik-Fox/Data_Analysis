@@ -33,7 +33,7 @@ for j =2:t
 
         n = j-1
         k_= k+n
-        covarp[j] += (φ^(n))*((X[k]-μ)*(X[k_]-μ))
+        covarp[j] += ((X[k]-μ)*(X[k_]-μ))
 
     end
     covarp[j] = covarp[j]/K
@@ -48,7 +48,7 @@ for j =2:t
 
         n = j-1
         k_= k+n
-        covarn[j] += (φ^(n))*((X_r[k]-μ)*(X_r[k_]-μ))
+        covarn[j] += ((X_r[k]-μ)*(X_r[k_]-μ))
 
     end
     covarn[j] = covarn[j]/K
@@ -60,5 +60,17 @@ covarn = reverse(covarn)
 
 covar = vcat(covarn[1:end-1],covarp)
 
-plot(collect(-10:1:10),covar[4990:5010])
-xaxis!(-10:10)
+
+## Theoretical Autocovariance
+L = 20 # [-L,L] is range for Autocovariance
+ac_th = zeros(2*L+1)
+for n in 1:2*L+1
+    ac_th[n] = (σ_ϵ^2/(1-φ^2))*φ^abs(n-L-1)
+end
+
+
+
+plot(collect(-L:1:L), ac_th, title="Theoretical and Computational Autocovariance", xlabel="Value of n", ylabel="Autocovariance", label="Theoretical")
+
+plot!(collect(-L:1:L),covar[t-L:t+L],label="Computational")
+#savefig("largeautocov.png")
